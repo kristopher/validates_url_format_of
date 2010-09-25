@@ -3,7 +3,7 @@
 require 'rubygems'
 require 'test/unit'
 require 'active_record'
-require "#{File.dirname(__FILE__)}/../init"
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'init')
 
 ActiveRecord::Base.establish_connection(
   :adapter  => 'sqlite3',
