@@ -2,12 +2,12 @@ module ValidatesUrlFormatOf
   IPv4_PART = /\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]/  # 0-255
   REGEXP = %r{
     \A
-    https?://                                        # http:// or https://
-    ([^\s:@]+:[^\s:@]*@)?                            # optional username:pw@
-    ( (xn--)?[[:alnum:]\w_]+([-.][[:alnum:]\w_]+)*\.[a-z]{2,6}\.? |  # domain (including Punycode/IDN)...
-        #{IPv4_PART}(\.#{IPv4_PART}){3} )            # or IPv4
-    (:\d{1,5})?                                      # optional port
-    ([/?]\S*)?                                       # optional /whatever or ?whatever
+    https?://                                                    # http:// or https://
+    ([^\s:@]+:[^\s:@]*@)?                                        # optional username:pw@
+    ( (([^\W_]+\.)*xn--)?[[:alnum:]\w_]+([-.][[:alnum:]\w_]+)*\.[a-z]{2,6}\.? |  # domain (including Punycode/IDN)...
+        #{IPv4_PART}(\.#{IPv4_PART}){3} )                        # or IPv4
+    (:\d{1,5})?                                                  # optional port
+    ([/?]\S*)?                                                   # optional /whatever or ?whatever
     \Z
   }iux
 
@@ -17,7 +17,7 @@ module ValidatesUrlFormatOf
   def validates_url_format_of(*attr_names)
     options = { :allow_nil => false,
                 :allow_blank => false,
-                :with => REGEXP }                
+                :with => REGEXP }
     options = options.merge(attr_names.pop) if attr_names.last.is_a?(Hash)
 
     attr_names.each do |attr_name|
@@ -25,6 +25,7 @@ module ValidatesUrlFormatOf
       validates_format_of(attr_name, { :message => message }.merge(options))
     end
   end
+  
 end
 
 ActiveRecord::Base.extend(ValidatesUrlFormatOf)
